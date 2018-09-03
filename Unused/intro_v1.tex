@@ -1,0 +1,49 @@
+\section{Introduction}
+\label{sec:intro}
+
+%% Soft robots have novel capabilities due to their inherent compliance, but better control methods are needed
+Soft robots, robots that incorporate non-rigid materials into their morphology to facilitate compliant interactions with the external world, are being developed for purposes such as manipulating delicate objects, adapting to unstructured environments, and enabling safe interactions with coexisting humans \cite{rus2015design}.  
+Effective performance of such tasks requires the robot to exhibit a high degree of compliance.
+Therefore, control methods for soft robots are needed that preserve their inherent compliance \Ram{I think you may be going down a dangerous road here. If the argument is that our method works well for robots with lots of compliance, then I'd ask whether the example you have in the results section is one that has lots of compliance?}.
+
+%% Current feedback control methods are designed to replace natural dynamics with a stiffer model, which negates their advantages
+\Ram{This is a sharp transition, you may want to say something like people rely on feedback typically do deal with modeling error; however...}
+Feedback controllers are ubiquitous in engineered systems due to their ability to cope with model uncertainty and disturbances.
+However, it has been shown in \cite{della2017controlling} that with feedback control there is a fundamental trade-off between control accuracy and mechanical compliance of the controlled system \Ram{you may want to give the reader some intuition for why this is true since that may be better at conveying that accurate models are important}.
+Feedback control negates the desirable compliance of the robot by effectively replacing its natural dynamics with those of a stiffer system \Ram{I'd push back here a bit. I think relying on feedback control with a shitty model is a bad idea. Since ultimately you will still rely on feedback even with your more complex model.}.
+Therefore, pure feedback controllers are poorly suited for soft robots in which preserving natural system compliance is of paramount importance.
+
+%% Better to combine feedforward with feedback, but good models are needed for feedforward
+For a better solution, we can look to observations of humans, who are able to obtain good motion accuracy while maintaining the compliance of their bodies \cite{wolpert2011principles}.
+This performance is achieved by making use of an anticipative motor control strategy that combines both feedforward and low-gain feedback components \cite{kawato1999internal}.
+The efficacy of feedforward control action depends on the availabiliy of a suitable predictive model of the controlled system, so reliable models are needed for such an approach to be applied to soft robots.
+
+%% Soft robot models cannot be built up from first principles without simplifying assumptions which limit the range of applicability 
+Due to the infinite degrees of freedom and highly nonlinear nature of soft materials, accurate models of soft robots are difficult to construct without making significant simplifying assumptions, such as constant curvature \cite{something for each assumption listed}, quasi-static \cite{anything}, etc. These simplifications lead to models that are valid only within a limited operation range.
+%Thus, a predictive dynamic model is rarely available in practice.
+To adequately characterize these systems over a wider operation range, some sort of data-driven system identification is necessary.
+% Thus, some sort of system identification is necessary to adequately characterize these systems.
+To avoid this shortcoming, we can turn instead to purely data-driven system identification methods.
+
+\Ram{I'd transition now into a paragraph that motivates why a data-driven approach may be more suitable for soft robots. I'd also mention existing techniques for doing data-driven model identification and their limitations. Has anyone else used data driven sys id for soft robots?}
+%% Briefly introduce other sysid methods (state space, neural network etc.)
+The advantage of constructing a model from observed data is that it can explain system behavior even in domains in which simplified models break down/are invalid. 
+These methods look exclusively at observations of input-output behavior, then try to construct a mathematical relationship between the two. 
+Data-driven sysid method come in two flavors: black-box and parameter estimation.
+A black-box model maps inputs to outputs, but does not provide any insight into the relationship between the two, therefore, system identification methods that build black box models such as neural networks, while sometimes effective, do not give control engineer much insight into how to design an effective controller for the system.
+A parameter estimation approach takes a pre-determined form for the dynamics with unknown parameters, and then finds the parameter values that will produce a model that best maps input to output behavior. These methods generate a model that can lend some insight into the system's stability etc. to control engineers, but is limited by the initial choice of the form of the system.
+In an infinite dimensional function space, it is possible to choose the form of a system that can describe the dynamics of any system with a suitable choice of parameters (because you have a basis set of functions that can represent any L2 function). Hence, we get the advantages of parameter estimation methods, without the downside of limiting the applicability of the resulting function.
+This is how linear sysid can be done in infinite dimensions for a nonlinear system in finite dimensions.
+
+
+% %% Reinforcement learning is often used because of this, but those results are task specific (CONSIDER DELETING THIS)
+% To cope with this lack of suitable dynamic models, some have turned to learning algorithms such as iterative learning control (ILC) to discover control inputs directly, avoiding the need to characterize internal model dynamics \cite{marchese2014autonomous, della2017controlling}. 
+% By observing error over repeated trials of the same task, ILC iteratively finds an input sequence such that the output of the system is as close as possible to a desired output.
+% Control inputs discovered in such a way do not necessarily generalize to other tasks, therefore they are insufficient for generating controllers that are adaptable to changing robot configurations and conditions.
+% 
+% %% System identification methods 
+% Knowledge of an accurate dynamic system model allows for the computation of feedforward control action that is valid across robot configurations. While it is difficult to construct such models from first principles, effective models can be learned via system identification. Rather than 
+
+
+%% We demonstrate a purely data-driven modeling technique based on the Koopman operator
+In this paper we apply the Koopman based system identification method described in \cite{mauroy2016linear} and \cite{mauroy2017koopman} to create a dynamic model of a soft robot arm and demonstrate that it captures the system's true dynamic behavior better than the models generated by several other state-of-the-art nonlinear system identification methods (Neural Network and NARMAX).
