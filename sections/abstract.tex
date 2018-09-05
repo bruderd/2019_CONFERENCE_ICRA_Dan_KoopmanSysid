@@ -1,13 +1,14 @@
 %% Soft robots are difficult to model, but safe to observe
-Soft robots are challenging to model due to their highly \Ram{what does highly mean?} nonlinear behavior.
-However, their soft bodies make it possible to safely observe their behavior under random control inputs, making them amenable to large-scale data collection.
+Soft robots are challenging to model due to their \sout{highly} \Ram{what does highly mean?} nonlinear behavior.
+However, their soft bodies make it possible to safely observe their behavior under random control inputs, making them amenable to large-scale data collection \hl{and system identification}.
 %% Nonlinear system identification is hard, linear sysid is easy
 \Ram{This is a sharp transition between ideas.}
 Nonlinear system identification methods generally consist of solving optimization problems with limited convergence guarantees, therefore the resulting model may be suboptimal.
-Linear system identification, i.e. linear regression, does not suffer from this shortcoming \Ram{but linear systems have shown limited ability to represent soft robot dynamics??}.
+Linear system identification, i.e. linear regression, does not suffer from this shortcoming, \hl{but linear models have shown limited ability to capture soft robot dynamics} \Ram{but linear systems have shown limited ability to represent soft robot dynamics??}.
 %% Koopman operator theory
 Koopman operator theory offers a way to represent nonlinear systems as linear systems in the infinite dimensional space of observables.
 This enables a model of a nonlinear system to be constructed via linear regression of observed data.
 %% Contribution
-In this paper we apply a system identification method based on Koopman operator theory to identify a dynamic model of a pneumatically actuated soft robot arm \Ram{abstracts should be written in the third person.}.
+\hl{In this paper, a system identification method based on Koopman operator theory is used to construct a dynamic model of a pneumatically actuated soft robot arm}
+\sout{In this paper we apply a system identification method based on Koopman operator theory to identify a dynamic model of a pneumatically actuated soft robot arm} \Ram{abstracts should be written in the third person.}.
 This model is shown to capture the dynamic behavior of the real system better than several other  state-of-the-art  nonlinear  system identification  methods  including  a  neural  network, NARMAX, nonlinear Hammerstein-Wiener, and state space model \Ram{try to emphasize that we've done it on a real robot even more loudly.}.

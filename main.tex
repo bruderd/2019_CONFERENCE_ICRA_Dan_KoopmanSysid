@@ -18,6 +18,8 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage[normalem]{ulem}
+\usepackage{soul}
 
 % Various math packages
 \usepackage{amsmath}								
@@ -72,10 +74,11 @@
 
 
 % Editing tools
+\newcounter{count}
 \usepackage{color}  % For Highlighting
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
 \newcommand{\David}[1]{\textcolor{red}{(#1)}}
-\newcommand{\Ram}[1]{\textcolor{blue}{(#1)}}
+\newcommand{\Ram}[1]{\textcolor{blue}{\textbf{\thecount} : (#1)} \addtocounter{count}{1}}
 \newcommand{\Dan}[1]{\textcolor{magenta}{(#1)}}
 \newcommand{\Audrey}[1]{\textcolor{maroon}{(#1)}}
 
@@ -83,9 +86,9 @@
 \newcommand{\mtx}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 \newcommand{\aln}[1]{\begin{align} #1 \end{align}}
 \newcommand{\dv}[1]{\dot{\vec{#1}}}
-\newcommand{\xv}{\vec{x}}
-\newcommand{\uv}{\vec{u}}
-\newcommand{\Fv}{\vec{F}}
+\newcommand{\xv}{x}
+\newcommand{\uv}{u}
+\newcommand{\Fv}{F}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\F}{\mathcal{F}}
 
@@ -96,6 +99,9 @@
 \newcommand{\revcomment}[2]{\textcolor{red}{#2} \marginnote{\##1}} % Include reference commands
 \renewcommand{\revcomment}[2]{#2}   % removes coloring of edited sections, i.e. makes doc look normal (comment this line out for highlighted edits)
 
+% Uncomment lines below to hide comments and deleted text (to make reading easier)
+% \renewcommand{\Ram}[1]{}
+% \renewcommand{\sout}[1]{}
 
 \title{\LARGE \bf
 Linear System Identification of Soft Robots \\ Using Koopman Operator Theory
