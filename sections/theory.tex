@@ -2,12 +2,12 @@
 \label{sec:theory}
 
 %% Overview of method
-This section presents a method for system identification that exploits the fact that any finite-dimensional nonlinear system has an equivalent infinite-dimensional linear representation in the space of real-valued functions of the system's state and input.
+This section \David{Paper?} presents \David{Or:  In this paper, we propose to use...} a method for system identification that exploits the fact that any finite-dimensional nonlinear system has an equivalent infinite-dimensional linear representation in the space of real-valued functions of the system's state and input.
 In this space of real-valued functions, the (linear) Koopman operator describes the flow of functions along trajectories of the system.
 The relationship between the finite and infinite dimensional representations of the system is bijective and well-defined \cite[\Ram{would be good to cite a particular theorem from this textbook}]{lasota2013chaos}.
 This enables us to approximate the Koopman operator via linear regression on observed data, then extract the equivalent nonlinear system representation.
 % A thorough explanation of this method can be found in \cite{mauroy2016linear} or \cite{mauroy2017koopman}.
-This section summarizes the system identification method presented in \cite{mauroy2016linear} and \cite{mauroy2017koopman} applied to system with known input. \Ram{you'll prolly want to remind the readers of the novelty in that you are doing this for a real system}.
+\David{In the remainder of this section, we will summarize the ...}This section summarizes the system identification method presented in \cite{mauroy2016linear} and \cite{mauroy2017koopman} applied to system with known input. \Ram{you'll prolly want to remind the readers of the novelty in that you are doing this for a real system} \David{Agree that this would be good.  Also in the introduction.  See:  claim of contribution.}.
 
 
 %% Overview of lifting technique
@@ -52,7 +52,7 @@ To understand this relationship, consider the derivative of an observable, $\dot
            &= ( F \cdot \nabla_{\xv} ) f(x,u)
 \end{align}
 where the second relation follows since $u$ is held constant and where $\nabla_x$ is the gradient with respect to $x$.
-Since this equation holds for all observables, we introduce the infinitesimal generator $L$  of the Koopman operator  \cite[Section 7.6]{lasota2013chaos} which is defined as :\Ram{1. you never explain what the infinitestimal generator is...or even cite an appropriate reference. 2. it would help the reader if you described the domain and range of $L$}
+Since this equation holds for all observables, we introduce the infinitesimal generator $L$ \David{Isn't $L$ used to define the space of square integrable functions?}  of the Koopman operator  \cite[Section 7.6]{lasota2013chaos} which is defined as :\Ram{1. you never explain what the infinitestimal generator is...or even cite an appropriate reference. 2. it would help the reader if you described the domain and range of $L$}
 \begin{align}
     % L &= \Fv \cdot \mtx{ \frac{\partial}{\partial \xv} & \frac{\partial}{\partial \uv} }^T
     L &= \Fv \cdot \nabla_{\xv}
@@ -73,6 +73,22 @@ In step one, measured states of the system are lifted to the space of observable
 Step two consists of performing least-squares regression on the lifted data to obtain an approximation of the Koopman operator.
 In step three, the nonlinear vector field $\Fv$ is obtained via \eqref{eq:L2F} and \eqref{eq:U2L}.
 The following three subsections describe each of these steps in more detail.
+
+\begin{algorithm}
+\SetAlgoLined
+\KwResult{Write here the result }
+ initialization\;
+ \While{While condition}{
+  instructions\;
+  \eIf{condition}{
+   instructions1\;
+   instructions2\;
+   }{
+   instructions3\;
+  }
+ }
+ \caption{How to write algorithms}
+\end{algorithm}
 
 
 %% STEP 1: Lifting the Data
@@ -109,7 +125,7 @@ We refer to ${\psi}(\xv, \uv)$ as an N-dimensional ``lifted'' version of ${(\xv,
 \subsection{Step 2: Approximating the Koopman Operator} \label{sec:step2}
 
 The second step of the Koopman-based system identification method is to identify the Koopman operator that best describes the flow of the lifted versions of measured data points.
-While the Koopman operator is theoretically infinite-dimensional, for practical purposes we identify a finite-dimensional approximation of it in $\F_N$ which we denote by $\bar{U}^t$.
+While the Koopman operator is theoretically infinite-dimensional, for practical purposes we identify a finite-dimensional approximation of it in $\F_N$ which we denote by $\bar{U}^t$ \David{I would propose to use a consistent notation for your finite dimensional approximations.  Either with the bar or with $_N$}.
 Note, that $\bar{U}^t$ can be represented by an $N \times N$ matrix which operates on observables via matrix multiplication:
 \begin{align}
     \bar{U}^t {\alpha} &= {\beta} 
@@ -130,7 +146,7 @@ Therefore, to perfectly mimic the action of $U^t$ acting on an observable in $\F
     {\alpha}^T {\psi} \left( \phi^t(\xv,\uv), \uv \right).
     \label{eq:Ubar}
 \end{align}
-Since this is just a linear equation, to find the best approximation of the finite dimensional Koopman operator in the $L^2$-norm sense, we let  ${\psi}^\dagger$ denotes the least-squares pseudoinverse of ${\psi}$ and let:
+Since this is just a linear equation, to find the best approximation of the finite dimensional Koopman operator in the $L^2$-norm sense, we let  ${\psi}^\dagger$ denotes the least-squares pseudoinverse of ${\psi}$ and let: \David{???}
 It then follows that for a given ${x \in \Real^n, \uv \in \Real^m}$ solving \eqref{eq:Ubar} for $\bar{U}^t$ yields the best possible approximation of $U^t$ on $\F_N$
 \begin{align}
     \bar{U}^t = \left( {\psi}(\xv, \uv)^T \right)^\dagger {\psi}( \phi^t(\xv,\uv), \uv )^T.

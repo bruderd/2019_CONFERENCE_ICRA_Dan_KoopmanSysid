@@ -20,6 +20,8 @@
 \usepackage{multirow}
 \usepackage[normalem]{ulem}
 \usepackage{soul}
+\usepackage[ruled]{algorithm2e}
+\usepackage[table]{xcolor}
 
 % Various math packages
 \usepackage{amsmath}								
@@ -74,11 +76,12 @@
 
 
 % Editing tools
-\newcounter{count}
+\newcounter{RamCount}
+\newcounter{DavidCount}
 \usepackage{color}  % For Highlighting
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
-\newcommand{\David}[1]{\textcolor{red}{(#1)}}
-\newcommand{\Ram}[1]{\textcolor{blue}{\textbf{\thecount} : (#1)} \addtocounter{count}{1}}
+\newcommand{\David}[1]{\textcolor{red}{\textbf{\theDavidCount}: (#1)} \addtocounter{DavidCount}{1}}
+\newcommand{\Ram}[1]{\textcolor{blue}{\textbf{\theRamCount}: (#1)} \addtocounter{RamCount}{1}}
 \newcommand{\Dan}[1]{\textcolor{magenta}{(#1)}}
 \newcommand{\Audrey}[1]{\textcolor{maroon}{(#1)}}
 
