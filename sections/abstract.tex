@@ -3,13 +3,13 @@ Soft robots are challenging to model due to their nonlinear behavior.
 However, their soft bodies make it possible to safely observe their behavior under random control inputs, making them amenable to large-scale data collection and system identification.
 %%
 This paper implements and evaluates a system identification method based on Koopman operator theory.
-This theory offers a way to represent a nonlinear system as a linear system in the infinite dimensional space of real-valued functions called observables, enabling models of nonlinear systems to be constructed via linear regression of observed data.
+This theory offers a way to represent a nonlinear system as a linear system in the infinite-dimensional space of real-valued functions called observables, enabling models of nonlinear systems to be constructed via linear regression of observed data.
 %%
 % The approach does not suffer from the limited convergence guarantees of other nonlinear system identification methods, which typically consist of solving a nonlinear non-convex optimization problem. 
 The approach does not suffer from some of the shortcomings of other nonlinear system identification methods, which typically require the manual tuning of training parameters and have limited convergence guarantees.
 %%
-A model of a pneumatic soft robot arm is constructed via this method, and used to predict the behavior of a real system.
-The total normalized-root-mean-square error (NRMSE) of its predictions over twelve validation trials was lower than
+A dynamic model of a pneumatic soft robot arm is constructed via this method, and used to predict the behavior of the real system.
+The total normalized-root-mean-square error (NRMSE) of its predictions over twelve validation trials is lower than
 that of several other identified models including a neural network, NLARX, nonlinear Hammerstein-Wiener, and linear state space model.
 % The total normalized-root-mean-square error (NRMSE) of its predictions over twelve validation trials was 2.1\%.
 % In comparison, the NRMSE of the predictions of several other identified models including a neural network, NLARX, nonlinear Hammerstein-Wiener, and linear state space model were greater than 4.4\%.
