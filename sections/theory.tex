@@ -2,17 +2,16 @@
 \label{sec:theory}
 
 %% Overview of method
-This section \David{Paper?} presents \David{Or:  In this paper, we propose to use...} a method for system identification that exploits the fact that any finite-dimensional nonlinear system has an equivalent infinite-dimensional linear representation in the space of real-valued functions of the system's state and input.
+The system identification method utilized in this work exploits the fact that any finite-dimensional nonlinear system has an equivalent infinite-dimensional linear representation in the space of real-valued functions of the system's state and input.
 In this space of real-valued functions, the (linear) Koopman operator describes the flow of functions along trajectories of the system.
-The relationship between the finite and infinite dimensional representations of the system is bijective and well-defined \cite[\Ram{would be good to cite a particular theorem from this textbook}]{lasota2013chaos}.
+The relationship between the finite and infinite dimensional representations of the system is bijective and well-defined \cite{lasota2013chaos}.
 This enables us to approximate the Koopman operator via linear regression on observed data, then extract the equivalent nonlinear system representation.
 % A thorough explanation of this method can be found in \cite{mauroy2016linear} or \cite{mauroy2017koopman}.
-\David{In the remainder of this section, we will summarize the ...}This section summarizes the system identification method presented in \cite{mauroy2016linear} and \cite{mauroy2017koopman} applied to system with known input. \Ram{you'll prolly want to remind the readers of the novelty in that you are doing this for a real system} \David{Agree that this would be good.  Also in the introduction.  See:  claim of contribution.}.
+The remainder of this section summarizes the system identification method presented in \cite{mauroy2016linear} and \cite{mauroy2017koopman} applied to a system with known input, which is later employed and validated on a real soft robotic system.
 
 
 %% Overview of lifting technique
 \subsection{Overview of Lifting Technique}
-
 
 %% System representation in state space
 Consider a dynamical system
@@ -25,7 +24,9 @@ For simplicity, we denote this map, which is referred to as the \emph{flow map},
 
 %% System representation in the space of observables
 The system can be lifted to an infinite dimensional function space $\F = L^2(X \times U, \Real)$ where $X \subset \Real^n$ and $U \subset \Real^m$ are compact subsets and $ L^2(X \times U, \Real)$ is the space of square integrable real-valued functions with domain $X \times U$.
-In $\F$, the flow of the system is characterized by the semigroup \Ram{whats a semigroup? Does it matter? If so at least define it or give a reference.} of Koopman operators 
+Elements of $\F$ are called \emph{observables}.
+In $\F$, the flow of the system is characterized by the set %semigroup 
+of Koopman operators 
 $U^t : \F \to \F$, for each $t \geq 0$,
 which describes the evolution of the observables $f \in \F$ along the trajectories of the system according to the following definition:
 \begin{align}
@@ -33,7 +34,6 @@ which describes the evolution of the observables $f \in \F$ along the trajectori
     % && \forall f \in \F, t \geq 0
     \label{eq:koopman}
 \end{align}
-\Ram{Give an example of what this is or why its important. Maybe use your figure?}
 As desired, $U^t$ is a linear operator even if the system \eqref{eq:nlsys} is nonlinear, since for $f_1, f_2 \in \F$ and $\lambda_1, \lambda_2 \in \Real$
 \begin{align}
     \begin{split}
@@ -41,10 +41,10 @@ As desired, $U^t$ is a linear operator even if the system \eqref{eq:nlsys} is no
     &= \lambda_1 U^t f_1 + \lambda_2 U^t f_2.
     \end{split}
 \end{align}
-Thus the Koopman operator provides a linear representation of the system in the infinite-dimensional space of observables \cite{budivsic2012applied}. 
+Thus the Koopman operator provides a linear representation of the flow of the system in the infinite-dimensional space of observables (see Fig. \ref{fig:overview}) \cite{budivsic2012applied}. 
 
 %% Relationship between representations of the system
-One can show that there is a one-to-one correspondence between the infinite-dimensional Koopman operator and finite-dimensional vector field \Ram{cite a specific theorem from lasota}.
+One can show that there is a one-to-one correspondence between the infinite-dimensional Koopman operator and finite-dimensional vector field.
 To understand this relationship, consider the derivative of an observable, $\dot{f}$, along trajectories of the system:
 \begin{align}
 \dot{f}(x,u) &= \frac{\partial f}{\partial x} \frac{dx}{dt} + \frac{\partial f}{\partial u}\frac{du}{dt} \\
@@ -52,42 +52,49 @@ To understand this relationship, consider the derivative of an observable, $\dot
            &= ( F \cdot \nabla_{\xv} ) f(x,u)
 \end{align}
 where the second relation follows since $u$ is held constant and where $\nabla_x$ is the gradient with respect to $x$.
-Since this equation holds for all observables, we introduce the infinitesimal generator $L$ \David{Isn't $L$ used to define the space of square integrable functions?}  of the Koopman operator  \cite[Section 7.6]{lasota2013chaos} which is defined as :\Ram{1. you never explain what the infinitestimal generator is...or even cite an appropriate reference. 2. it would help the reader if you described the domain and range of $L$}
+Since this equation holds for all observables, we introduce the infinitesimal generator of the Koopman operator ${A:\F \to \F}$ \cite{} which is defined as:
 \begin{align}
     % L &= \Fv \cdot \mtx{ \frac{\partial}{\partial \xv} & \frac{\partial}{\partial \uv} }^T
-    L &= \Fv \cdot \nabla_{\xv}
+    A &= \Fv \cdot \nabla_{\xv}
     \label{eq:L2F}
 \end{align}
-Note, that one can show the following relationship between the Koopman operator and its infinitesimal generator \cite{}\Ram{cite a result}:
+Note, that one can show the following relationship between the Koopman operator and its infinitesimal generator \cite[Section 7.6]{lasota2013chaos}:
 % where $\nabla_x$ is the gradient with respect to $x$, and $L$ is the infinitesimal generator of the Koopman operator  \cite[Section 7.6]{lasota2013chaos} \Ram{1. you never explain what the infinitestimal generator is...or even cite an appropriate reference. 2. it would help the reader if you described the domain and range of $L$} which satisfies
 \begin{align}
-    U^t &= e^{L t} = \sum_{k=0}^\infty \frac{t^k}{k!} L^k
+    U^t &= e^{A t} = \sum_{k=0}^\infty \frac{t^k}{k!} A^k
     \label{eq:U2L}
 \end{align}
-These equations can be used to solve for the vector field $F$ when the Koopman operator $U^t$ is known \Ram{where will you show this?}.
+In Section \ref{sec:step3} these equations are used to solve for the vector field $F$ when the Koopman operator $U^t$ is known.
 
 %% Steps of sysid method
 By providing a linear representation of a system with a one-to-one correspondence to its nonlinear representation, Koopman operator theory enables linear system identification of nonlinear systems. 
-This process proceeds in three steps \Ram{do we want to make this an algorithm box?} \Dan{I do think so}.
+This process proceeds in three steps which are summarized by Algorithm \ref{alg:sysid}.
 In step one, measured states of the system are lifted to the space of observables.
 Step two consists of performing least-squares regression on the lifted data to obtain an approximation of the Koopman operator.
-In step three, the nonlinear vector field $\Fv$ is obtained via \eqref{eq:L2F} and \eqref{eq:U2L}.
+In step three, an approximation of the nonlinear vector field $\Fv$ is obtained via \eqref{eq:L2F} and \eqref{eq:U2L}.
 The following three subsections describe each of these steps in more detail.
 
+
+%% ALGORITHM
 \begin{algorithm}
 \SetAlgoLined
-\KwResult{Write here the result }
- initialization\;
- \While{While condition}{
-  instructions\;
-  \eIf{condition}{
-   instructions1\;
-   instructions2\;
-   }{
-   instructions3\;
-  }
- }
- \caption{How to write algorithms}
+\KwIn{$ \{ (\xv_k,\uv_k),(\xv_{k+1},\uv_k) \} \text{ for } k = 1, ... , K$}
+\textbf{Step 1:} Lift data via \eqref{eq:lift} \\
+% \begin{algomathdisplay}
+%     \psi(x_k,u_k) \hspace{15pt} \forall k \in 1,...,K
+% \end{algomathdisplay} \\
+\textbf{Step 2:} Approximate Koopman operator, $\bar{U^{T_s}}$ via \eqref{eq:Ubar} \\
+% \begin{algomathdisplay}
+%     % \text{Step 2: (Approximate Koopman Operator) }
+%     \bar{U}^{T_s} := \Psi_x^\dagger \Psi_y
+% \end{algomathdisplay} \\
+\textbf{Step 3:} Identify Vector Field, $\bar{F}$ via \eqref{eq:U2L} and \eqref{eq:Fbar} \\
+% \begin{algomathdisplay}
+%     \text{(a) } \bar{A} := \frac{1}{T_s} \log \bar{U}^{T_s} \hspace{20pt} \text{(b) } \bar{F} := \frac{\partial \Omega_{x}^\dagger}{\partial x} \underline{\bar{A}}^T \Omega_{x}
+% \end{algomathdisplay} \\
+\KwOut{$\bar{\Fv}$}
+ \caption{Koopman-Based System Identification}
+ \label{alg:sysid}
 \end{algorithm}
 
 
@@ -97,24 +104,24 @@ The following three subsections describe each of these steps in more detail.
 %% Overview of this step
 The first step of the Koopman based system identification method consists of converting empirical data into a form that can be used to identify a linear model in the space of observables.
 Theoretically this process would consist of ``lifting'' state measurements into the infinite-dimensional space of observables $\F$.
-In the implementation, however, measurements can only be lifted into a finite-dimensional subspace.
+To be implementable, however, measurements can only be lifted into a finite-dimensional subspace.
 %% Approximation must be finite dimensional=
-Define $\F_N \subset \F$ to be the subspace of $\F$ spanned by $N$ linearly independent basis functions $\{ \psi_k \}_{k=1}^N$ 
-\Ram{maybe give us an example of an appropriate set?}.
+Define $\bar{\F} \subset \F$ to be the subspace of $\F$ spanned by $N$ linearly independent basis functions $\{ \psi_k \}_{k=1}^N$ 
+(e.g. monomials, sinusoids, exponenentials).
 %
-Any observable ${f \in \F_N}$ can be written as a linear combination of elements of its basis
+Any observable ${\bar{f} \in \bar{\F}}$ can be written as a linear combination of elements of its basis
 \begin{align}
-    f &= \alpha_1 \psi_{1} + \cdots + \alpha_N \psi_N.
+    \bar{f} &= \alpha_1 \psi_{1} + \cdots + \alpha_N \psi_N.
 \end{align}
-Note that the vector of coefficients ${\alpha = \mtx{\alpha_1 & \cdots & \alpha_N}^T}$ provide a \emph{vector representation} for any $f \in \F_N$.
-To evaluate $f$ at a given state $\xv$ and constant input $\uv$, we introduce the \emph{lifting function} ${\psi}:\Real^n \times \Real^m \to \Real^N$ defined as:
+Note that the vector of coefficients ${\alpha = \mtx{\alpha_1 & \cdots & \alpha_N}^T}$ provide a \emph{vector representation} for any $\bar{f} \in \bar{\F}$.
+To evaluate $\bar{f}$ at a given state $\xv$ and constant input $\uv$, we introduce the \emph{lifting function} ${\psi}:\Real^n \times \Real^m \to \Real^N$ defined as:
 \begin{align}
     {\psi}(\xv, \uv) = \mtx{ \psi_1(\xv, \uv) & \cdots & \psi_N(\xv, \uv)}^T
     \label{eq:lift}
 \end{align}
-Then, $f(\xv, \uv)$ can be expressed in vector form as
+Then, $\bar{f}(\xv, \uv)$ can be expressed in vector form as
 \begin{align}
-    f(\xv, \uv) &= {\alpha}^T {\psi}(\xv, \uv).
+    \bar{f}(\xv, \uv) &= {\alpha}^T {\psi}(\xv, \uv).
     \label{eq:fxu}
 \end{align}
 We refer to ${\psi}(\xv, \uv)$ as an N-dimensional ``lifted'' version of ${(\xv, \uv)}$, since multiplying ${\psi}(\xv, \uv)$ by the vector representation of an observable yields the value of the observable at $\xv, \uv$.
@@ -125,29 +132,29 @@ We refer to ${\psi}(\xv, \uv)$ as an N-dimensional ``lifted'' version of ${(\xv,
 \subsection{Step 2: Approximating the Koopman Operator} \label{sec:step2}
 
 The second step of the Koopman-based system identification method is to identify the Koopman operator that best describes the flow of the lifted versions of measured data points.
-While the Koopman operator is theoretically infinite-dimensional, for practical purposes we identify a finite-dimensional approximation of it in $\F_N$ which we denote by $\bar{U}^t$ \David{I would propose to use a consistent notation for your finite dimensional approximations.  Either with the bar or with $_N$}.
+While the Koopman operator is theoretically infinite-dimensional, for practical purposes we identify a finite-dimensional approximation of it in $\bar{\F}$ which we denote by $\bar{U}^t$.
 Note, that $\bar{U}^t$ can be represented by an $N \times N$ matrix which operates on observables via matrix multiplication:
 \begin{align}
     \bar{U}^t {\alpha} &= {\beta} 
     % && {\alpha}, {\beta} \in \F_N .
     \label{eq:Ubar}
 \end{align}
-where $\alpha, \beta$ are vector representations of observables in $\F_N$.
-Our goal is to find a $\bar{U}^t$ that describes the action of the infinite dimensional Koopman operator $U^t$ as accurately as possible in the $L^2$-norm sense on the finite dimensional subspace $\F_N$  of all observables.
+where $\alpha, \beta$ are vector representations of observables in $\bar{\F}$.
+Our goal is to find a $\bar{U}^t$ that describes the action of the infinite dimensional Koopman operator $U^t$ as accurately as possible in the $L^2$-norm sense on the finite dimensional subspace $\bar{\F}$  of all observables.
 % We want to find $\bar{U}^t$ such that it describes the action of the infinite-dimensional Koopman operator $U^t$ as accurately as possible, i.e.
 % \begin{align}
 %     U^t f(\xv,\uv) &\approx ( \bar{U}^t {\alpha} )^T {\psi}(\xv, \uv)
 % \end{align}
 % \hl{for all $f \in \F_n$ with $\alpha$ as its vector representation}.
 % From \eqref{eq:koopman}, the Koopman operator describes the flow of observables in $\F$.
-Therefore, to perfectly mimic the action of $U^t$ acting on an observable in $\F_N \subset \F$, the following should be true
+Therefore, to perfectly mimic the action of $U^t$ acting on an observable in $\bar{\F} \subset \F$, the following should be true
 \begin{align}
     ( \bar{U}^t {\alpha} )^T {\psi}(\xv, \uv) &=
     {\alpha}^T {\psi} \left( \phi^t(\xv,\uv), \uv \right).
     \label{eq:Ubar}
 \end{align}
-Since this is just a linear equation, to find the best approximation of the finite dimensional Koopman operator in the $L^2$-norm sense, we let  ${\psi}^\dagger$ denotes the least-squares pseudoinverse of ${\psi}$ and let: \David{???}
-It then follows that for a given ${x \in \Real^n, \uv \in \Real^m}$ solving \eqref{eq:Ubar} for $\bar{U}^t$ yields the best possible approximation of $U^t$ on $\F_N$
+Since this is just a linear equation, to find the best approximation of the finite dimensional Koopman operator in the $L^2$-norm sense, we let  ${\psi}^\dagger$ denotes the least-squares pseudoinverse of ${\psi}$.
+It then follows that for a given ${x \in \Real^n, \uv \in \Real^m}$, solving \eqref{eq:Ubar} for $\bar{U}^t$ yields the best possible approximation of $U^t$ on $\bar{\F}$
 \begin{align}
     \bar{U}^t = \left( {\psi}(\xv, \uv)^T \right)^\dagger {\psi}( \phi^t(\xv,\uv), \uv )^T.
     \label{eq:Uapprox}
@@ -173,11 +180,12 @@ It then follows that for a given ${x \in \Real^n, \uv \in \Real^m}$ solving \eqr
 
 
 %% How this is done on our system
-To approximate the Koopman operator from experimental data, we take $K+1$ discrete state measurements with sampling period $T_s$. Under the assumption that the control input is constant between samples, we separate the data into a set of $K$ so-called ``snapshot pairs'' of the form ${ \{(\xv_k,\uv_k),(\xv_{k+1},\uv_k)\} \in \Real^{(n \times m) \times 2} }$ where
+To approximate the Koopman operator from a set of experimental data, we take $K+1$ discrete state measurements with sampling period $T_s$. Under the assumption that the control input is constant between samples, we separate the data into a set of $K$ so-called ``snapshot pairs'' of the form ${ \{(\xv_k,\uv_k),(y_{k},\uv_k)\} \in \Real^{(n \times m) \times 2} }$ where
 \begin{align}
-    x_{k+1} &= \phi^{T_s} (x_k, u_k).
+    y_{k} &= \phi^{T_s} (x_k, u_k) + \sigma_k
 \end{align}
-For our basis of $\F_N$, we choose the basis of monomials of $\xv$ and $\uv$ with total degree less than or equal to $w$, which implies $N=(n+m+w)!/\left((n+m)!w!\right)$ \cite[\Ram{cite a specific definition or result}]{mauroy2016linear}. 
+and $\sigma_k$ denotes measurement noise.
+For our basis of $\bar{\F}$, we choose the basis of monomials of $\xv$ and $\uv$ with total degree less than or equal to $w$, which implies $N=(n+m+w)!/\left((n+m)!w!\right)$ \cite[Section III]{mauroy2016linear}. 
 We then lift all of the snapshot pairs according to \eqref{eq:lift} and compile them into the following $K \times N$ matrices
 \begin{align}
     &\Psi_x = \mtx{ {\psi}(\xv_1, \uv_1)^T \\ \vdots \\  {\psi}(\xv_K, \uv_K)^T}
@@ -196,7 +204,7 @@ where ${\Psi}^\dagger$ denotes the least-squares pseudoinverse of ${\Psi}$.
 The final step of the Koopman-based system identification method is to identify the nonlinear vector field by making use of the one-to-one correspondence between the infinite and finite dimensional system representations.
 % Consider again the vector field $\Fv(\xv,\uv)=\mtx{F_1(\xv,\uv) & \cdots & F_n(\xv,\uv)}^T$.
 % Each $F_i$ is a function of state and input that can be represented as a linear combination of the basis elements of $\F$.
-As earlier, our goal is to find a $\bar{F}$ that describes the behavior of the vector field $F$ as accurately as possible in the $L^2$-norm sense on the finite dimensional subspace $\F_N$.
+As earlier, our goal is to find a $\bar{F}$ that describes the behavior of the vector field $F$ as accurately as possible in the $L^2$-norm sense on the finite dimensional subspace $\bar{\F}$.
 
 % Our goal is to find a $\bar{U}^t$ that describes the action of the infinite dimensional Koopman operator $U^t$ as accurately as possible in the $L^2$-norm sense on the finite dimensional subspace $\F_N$  of all observables.
 
@@ -221,37 +229,38 @@ As earlier, our goal is to find a $\bar{F}$ that describes the behavior of the v
 % \end{align}
 % Therefore, identifying the vector field reduces to the task of identifying $nN$ total coefficients $c_{i,j}$.
 
-The vector field is related to the Koopman operator through its infinitesimal generator \Ram{reference a specific equation}.
+The vector field is related to the Koopman operator through its infinitesimal generator according to Equation \eqref{eq:L2F}.
 % \Ram{sharp transition between the previous paragraph and the ensuing one}
-With the approximation of the Koopman operator $\bar{U}^{T_s}$ found in Section \ref{sec:step2}, we can solve for the infinitesimal generator of the Koopman semigroup $\bar{L}$ by inverting \eqref{eq:U2L}
+With the approximation of the Koopman operator $\bar{U}^{T_s}$ found in Section \ref{sec:step2}, we can solve for the infinitesimal generator of the Koopman semigroup \Ram{complain.} $\bar{A}$ by inverting \eqref{eq:U2L}
 \begin{align}
-    \bar{L} &= \frac{1}{T_s} \log{ \bar{U}^t } \in \Real^{N \times N}
+    \bar{A} &= \frac{1}{T_s} \log{ \bar{U}^t } \in \Real^{N \times N}
 \end{align}
-where $\log$ denotes the principal matrix logarithm \cite[\Ram{cite a particular equation}]{higham2008functions}.
+where $\log$ denotes the principal matrix logarithm \cite[Chapter 11]{higham2008functions}.
 Note that the principal matrix logarithm is only defined for matrices whose eigenvalues all have non-negative real components, and that $\bar{U}^t$ may have zero or negative eigenvalues when the number of data points is too small \cite{mauroy2016linear}.
 Therefore this method might fail if the number of data points is insufficient.
-In this instance, more system measurements must be taken to resolve this issue.
+In this instance, more system measurements can be taken to resolve the issue.
 
-With $\bar{L}$ known, \eqref{eq:L2F} can be used to identify $\bar{F}$.
-Consider $L$ applied to an observable $f \in \F_N$.
-According to \eqref{eq:L2F}, this is equivalent to the inner product of the vector field $\Fv$ and the gradient of $f$ with respect to $x$  
+With $\bar{A}$ known, \eqref{eq:L2F} can be used to identify $\bar{F}$.
+Consider $A$ applied to an observable $f \in \F$.
+According to \eqref{eq:L2F}, this is equivalent to the inner product of the vector field $\Fv$ and the gradient of ${f}$ with respect to $x$  
 \begin{align}
-    L f(\xv,\uv) &= \frac{\partial f(\xv,\uv)}{\partial \xv} \Fv(\xv,\uv).
+    A f(\xv,\uv) &= \frac{\partial f(\xv,\uv)}{\partial \xv} \Fv(\xv,\uv).
     \label{eq:L2Fxu}
 \end{align}
 \Dan{i.e. the dynamics of the observable $\partial f / \partial t$}
-Let $\alpha \in \Real^N$ be the vector representation of $f$.
+Let $\alpha \in \Real^N$ be the vector representation $\bar{f}$, the projection of ${f}$ onto $\bar{\F}$.
 Then from \eqref{eq:fxu} the finite-dimensional equivalent of \eqref{eq:L2Fxu} is given by
 \begin{align}
-    (\bar{L} {\alpha})^T \vac{\psi}(\xv,\uv) &= {\alpha}^T \frac{\partial \psi(\xv, \uv)}{\partial \xv} \bar{F}.
+    (\bar{A} {\alpha})^T {\psi}(\xv,\uv) &= {\alpha}^T \frac{\partial \psi(\xv, \uv)}{\partial \xv} \bar{F}.
     \label{eq:Lbar2C}
 \end{align}
 We seek the vector field $\bar{F}$ such that \eqref{eq:Lbar2C} holds as well as possible in the $L^2$-norm sense for all observed data.
 Therefore we choose the least-square solution to \eqref{eq:Lbar2C} over the set of all observed data points $\left\{ (x_k,u_k) | k = 1,...,K \right\}$ which is given by
 \begin{align}
     \bar{F} &= \mtx{ \frac{\partial \psi(\xv_1, \uv_1)}{\partial \xv} \\ \vdots \\ \frac{\partial \psi(\xv_K, \uv_K)}{\partial \xv} }^\dagger
-    \mtx{ \bar{L}^T & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & \bar{L}^T }
+    \mtx{ \bar{A}^T & \cdots & 0 \\ \vdots & \ddots & \vdots \\ 0 & \cdots & \bar{A}^T }
     \mtx{ \psi(x_1,u_1) \\ \vdots \\ \psi(x_K,u_K) }.
+    \label{eq:Fbar}
 \end{align}
 % \begin{align}
 %     \bar{F} &\approx \mtx{ \frac{\partial \psi(\xv_1, \uv_1)}{\partial \xv} \\ \vdots \\ \frac{\partial \psi(\xv_K, \uv_K)}{\partial \xv} }^\dagger
