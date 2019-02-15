@@ -1,4 +1,4 @@
-\section{Koopman Operator Method for \\ System Identification}
+\section{Koopman Operator Method for System Identification}
 \label{sec:theory}
 
 %% Overview of method
@@ -85,7 +85,7 @@ The following three subsections describe each of these steps in more detail.
 % \begin{algomathdisplay}
 %     \psi(x_k,u_k) \hspace{15pt} \forall k \in 1,...,K
 % \end{algomathdisplay} \\
-\textbf{Step 2:} Approximate Koopman operator, $\bar{U}^{T_s}$ via \eqref{eq:Ubar} \\
+\textbf{Step 2:} Approximate Koopman operator, $\bar{U}^{T_s}$ via \eqref{eq:Uapprox} \\
 % \begin{algomathdisplay}
 %     % \text{Step 2: (Approximate Koopman Operator) }
 %     \bar{U}^{T_s} := \Psi_x^\dagger \Psi_y
@@ -153,9 +153,9 @@ Therefore, to perfectly mimic the action of $U^t$ acting on an observable in $\b
 \begin{align}
     ( \bar{U}^t {\alpha} )^T {\psi}(\xv, \uv) &=
     {\alpha}^T {\psi} \left( \phi^t(\xv,\uv), \uv \right).
-    \label{eq:Ubar}
+    \label{eq:UbarEq}
 \end{align}
-Since this is a linear equation, it follows that for a given ${x \in \Real^n, \uv \in \Real^m}$, solving \eqref{eq:Ubar} for $\bar{U}^t$ yields the best approximation of $U^t$ on $\bar{\F}$ in the $L^2$-norm sense:
+Since this is a linear equation, it follows that for a given ${x \in \Real^n, \uv \in \Real^m}$, solving \eqref{eq:UbarEq} for $\bar{U}^t$ yields the best approximation of $U^t$ on $\bar{\F}$ in the $L^2$-norm sense:
 \begin{align}
     \bar{U}^t = \left( {\psi}(\xv, \uv)^T \right)^\dagger {\psi}( \phi^t(\xv,\uv), \uv )^T
     \label{eq:Uapprox}
