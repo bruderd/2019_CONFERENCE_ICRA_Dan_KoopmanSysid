@@ -16,9 +16,9 @@ Fig. \ref{fig:koopmanSim} illustrates the ability of the Koopman-based model to 
 %% FIGURE: Koopman simulation plot
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/koopPlot4_cropped.png}
+    \includegraphics[width=0.9\linewidth]{figures/koopPlot4_cropped.png}
     \caption{
-    The measured position of the robot end effector over a 30 second time window (black,dotted) superimposed with the position predicted by the Koopman-based model (blue) given the same initial condition and control inputs.}
+    The measured position of the robot end effector over a 30 second time window (black,dotted) superimposed with the position predicted by the Koopman-based model (blue) given the same initial condition and control inputs. Coordinates are defined with respect to the global coordinate frame depicted in Fig. \ref{fig:flaccy}.}
     \label{fig:koopmanSim}
 \end{figure}
 
@@ -31,7 +31,7 @@ Fig. \ref{fig:koopmanSim} illustrates the ability of the Koopman-based model to 
 \end{figure}
 
 %% TABLE: RMSE results table
-\begin{table}[]
+\begin{table}
     \rowcolors{2}{white}{gray!25}
     \setlength\tabcolsep{5pt} % default value: 6pt
     \centering
@@ -40,7 +40,7 @@ Fig. \ref{fig:koopmanSim} illustrates the ability of the Koopman-based model to 
         \hline
         \rowcolor{white} 
         & \multicolumn{6}{c |}{\textbf{States}} & & \textbf{Std.} \\
-        \cline{2-7} \rowcolor{white}
+        \hhline{~------~~} \rowcolor{white}
         \multirow{-2}{*}{\textbf{Model}} & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & \multirow{-2}{*}{\textbf{Avg.}} & \textbf{Dev.} \\
         \hline
         % RESULTS FOR ROBOT A

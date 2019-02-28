@@ -16,11 +16,11 @@ Rather, they act as black-box models only capable of mapping inputs to outputs.
 %% Other models rely on manual tuning so success is highly dependent on training parameters chosen
 Another advantage of the Koopman model is that its quality does not depend on an initial model estimate or tuning parameters.
 By iterating over the set of all initializations and tuning parameters, one may be able to generate better performing models than those shown; unfortunately, this multivariate trial-and-error process may not affect results in a predictable way.
-In contrast, the only tuning parameter involved in the Koopman method is the degree of the monomial basis, which has a magnitude that is directly proportional to model accuracy. 
+In contrast, the only tuning parameter involved in the Koopman method is the maximum degree of the monomial basis functions, which has a magnitude that is directly proportional to model accuracy. 
 
 %% Challenges and how it could be improved
 While the results here are promising, there are practical challenges to extending the Koopman approach to higher dimensional systems.
-As the dimension of the state space increases, so does the size of the monomial basis of the finite-dimensional subspace of observables.
+As the dimension of the state space increases, so does the size of the monomial basis set of the finite-dimensional subspace of observables.
 This greatly increases the size of the matrix equations that must be solved, leading to computational intractability for sufficiently high dimensional systems.
 However, if some information about the system is known beforehand, this issue could be counteracted by choosing a more suitable basis for the observables.
 For example, if the system exhibits oscillatory motion, a lower dimensional fourier basis may be more suitable than a monomial basis to represent the behavior.

@@ -45,7 +45,7 @@ Thus the Koopman operator provides a linear representation of the flow of the sy
 
 %% Relationship between representations of the system
 One can show that there is a one-to-one correspondence between the infinite-dimensional Koopman operator and finite-dimensional vector field.
-To understand this relationship, consider the derivative of an observable, $\dot{f}$, along trajectories of the system:
+To understand this relationship, consider the time derivative of an observable, $\dot{f}$, along trajectories of the system:
 \begin{align}
     \dot{f}(x,u) &= \frac{\partial f}{\partial x} \frac{dx}{dt} + \frac{\partial f}{\partial u}\frac{du}{dt} \\
            &= \frac{\partial f}{\partial x} F(x,u) \\
@@ -59,7 +59,7 @@ Since this equation holds for all observables, we introduce the infinitesimal ge
     A &= \Fv \cdot \nabla_{\xv}
     \label{eq:L2F}
 \end{align}
-The infinitesimal generator thus describes the dynamics of the observables along trajectories of the system. 
+The infinitesimal generator thus describes the dynamics of the observables along trajectories of the system (i.e. ${\dot{f}=Af}$). 
 Recalling that the Koopman operator describes the flow of observables, one can show that the Koopman operater is associated with its infinitesimal generator via the following relation:
 % where $\nabla_x$ is the gradient with respect to $x$, and $L$ is the infinitesimal generator of the Koopman operator  \cite[Section 7.6]{lasota2013chaos} \Ram{1. you never explain what the infinitestimal generator is...or even cite an appropriate reference. 2. it would help the reader if you described the domain and range of $L$} which satisfies
 \begin{align}
@@ -73,7 +73,7 @@ By providing a linear representation of a system with a one-to-one correspondenc
 This process proceeds in three steps which are summarized by Algorithm \ref{alg:sysid}.
 In step one, measured states of the system are lifted to the space of observables.
 Step two consists of performing least-squares regression on the lifted data to obtain an approximation of the Koopman operator.
-In step three, an approximation of the nonlinear vector field $\Fv$ is obtained via \eqref{eq:L2F} and \eqref{eq:U2L}.
+In step three, an approximation of the nonlinear vector field $\Fv$ is obtained using \eqref{eq:L2F} and \eqref{eq:U2L}.
 The following three subsections describe each of these steps in more detail.
 
 
@@ -90,7 +90,7 @@ The following three subsections describe each of these steps in more detail.
 %     % \text{Step 2: (Approximate Koopman Operator) }
 %     \bar{U}^{T_s} := \Psi_x^\dagger \Psi_y
 % \end{algomathdisplay} \\
-\textbf{Step 3:} Approximate Vector Field, $\bar{F}$ via \eqref{eq:U2L} and \eqref{eq:Fbar} \\
+\textbf{Step 3:} Approximate Vector Field, $\bar{F}$ via \eqref{eq:logU} and \eqref{eq:Fbar} \\
 % \begin{algomathdisplay}
 %     \text{(a) } \bar{A} := \frac{1}{T_s} \log \bar{U}^{T_s} \hspace{20pt} \text{(b) } \bar{F} := \frac{\partial \Omega_{x}^\dagger}{\partial x} \underline{\bar{A}}^T \Omega_{x}
 % \end{algomathdisplay} \\
@@ -111,11 +111,11 @@ To be implementable, however, measurements can only be lifted into a finite-dime
 Define $\bar{\F} \subset \F$ to be the subspace of $\F$ spanned by $N$ linearly independent basis functions $\{ \psi_k \}_{k=1}^N$ 
 (e.g. monomials, sinusoids, exponentials).
 %
-Any observable ${\bar{f} \in \bar{\F}}$ can be written as a linear combination of elements of its basis
+Any observable ${\bar{f} \in \bar{\F}}$ can be written as a linear combination of elements of the basis
 \begin{align}
     \bar{f} &= \alpha_1 \psi_{1} + \cdots + \alpha_N \psi_N.
 \end{align}
-Note that the vector of coefficients ${\alpha = \mtx{\alpha_1 & \cdots & \alpha_N}^T}$ provide a \emph{vector representation} for any $\bar{f} \in \bar{\F}$.
+Note that the vector of coefficients ${\alpha = \mtx{\alpha_1 & \cdots & \alpha_N}^T}$ provides a \emph{vector representation} for $\bar{f} \in \bar{\F}$.
 To evaluate $\bar{f}$ at a given state $\xv$ and constant input $\uv$, we introduce the \emph{lifting function} ${\psi}:\Real^n \times \Real^m \to \Real^N$ defined as:
 \begin{align}
     {\psi}(\xv, \uv) = \mtx{ \psi_1(\xv, \uv) & \cdots & \psi_N(\xv, \uv)}^T
@@ -135,7 +135,7 @@ We refer to ${\psi}(\xv, \uv)$ as an $N$-dimensional ``lifted'' version of ${(\x
 
 The second step of the Koopman-based system identification method is to identify the Koopman operator that best describes the flow of the lifted versions of measured data points.
 While the Koopman operator is theoretically infinite-dimensional, for practical purposes we identify a finite-dimensional approximation of it in $\bar{\F}$ which we denote by $\bar{U}^t$.
-Note, that $\bar{U}^t$ can be represented by an $N \times N$ matrix which operates on observables via matrix multiplication:
+Note that $\bar{U}^t$ can be represented by an $N \times N$ matrix which operates on observables via matrix multiplication:
 \begin{align}
     \bar{U}^t {\alpha} &= {\beta} 
     % && {\alpha}, {\beta} \in \F_N .
@@ -236,6 +236,7 @@ The vector field is related to the Koopman operator through its infinitesimal ge
 With the approximation of the Koopman operator $\bar{U}^{T_s}$ found in Section \ref{sec:step2}, we can solve for the infinitesimal generator of the set of Koopman operators $\bar{A}$ by inverting \eqref{eq:U2L}:
 \begin{align}
     \bar{A} &= \frac{1}{T_s} \log{ \bar{U}^t } \in \Real^{N \times N}
+    \label{eq:logU}
 \end{align}
 where $\log$ denotes the principal matrix logarithm \cite[Chapter 11]{higham2008functions}.
 Note that the principal matrix logarithm is only defined for matrices whose eigenvalues all have non-negative real components, and that $\bar{U}^t$ may have zero or negative eigenvalues when the number of data points is too small \cite{mauroy2016linear}.
